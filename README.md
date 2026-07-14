@@ -19,7 +19,16 @@
 | `includeCoAuthoredBy` | 关闭/开启 git 提交记录中 Claude 的提交者记录 | `true` / `false` |
 | `env.CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` | 自动压缩上下文的百分比 | `75` |
 | `env.CLAUDE_CODE_AUTO_COMPACT_WINDOW` | 自动压缩上下文的 token 阈值 | `200000` |
+| `env.CLAUDE_CODE_MAX_RETRIES` | API 请求失败时的最大重试次数 | `5` |
 | `permissions.defaultMode` | 默认权限模式，可设为最大权限模式 | `"bypassPermissions"` / `"auto"` |
+
+### `CLAUDE_CODE_MAX_RETRIES` 说明
+
+- **作用**：控制 Claude Code 向模型 API 发起请求失败时的最大重试次数。
+- **触发重试的错误**：限流（429）、服务端错误（5xx）、过载（529）、网络抖动等瞬时错误；非瞬时错误（如鉴权失败 401）不会重试。
+- **取值**：非负整数，值越大重试次数越多，但同时会延长单次请求在最坏情况下的等待时间（通常配合指数退避）。
+- **建议**：网络不稳定或经代理/中转链路较长时适当调高（如 `5`～`10`）；默认值由 Claude Code 内置行为决定，未设置时按其默认重试策略执行。
+- **生效范围**：通过 `settings.json` 的 `env` 配置，作用于整个会话；也可在启动前通过系统环境变量 `CLAUDE_CODE_MAX_RETRIES=5 claude` 临时指定。
 
 ## 启动命令
 

@@ -6,7 +6,8 @@
 	    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-pro",
 	    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-5.2",
 	    "ANTHROPIC_DEFAULT_SONNET_MODEL": "kimi-k2.7-code",
-	    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "75"
+	    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "75",
+    	"CLAUDE_CODE_MAX_RETRIES": "5"
 	},
 	"includeCoAuthoredBy": false,
 	"permissions": {
