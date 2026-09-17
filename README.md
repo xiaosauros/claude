@@ -6,11 +6,23 @@
 
 | 文件/目录 | 类型 | 说明 |
 |-----------|------|------|
+| `AGENTS.md` | 文档 | AI 工作规范总入口（通用约定、核心原则、规范索引） |
+| `CLAUDE.md` | 配置 | Claude 项目记忆入口，通过 `@AGENTS.md` 导入规范 |
+| `commands/` | 命令 | 自定义命令（`codemap` 项目梳理 / `commit` 规范提交 / `yes` 确认） |
+| `frontend/` | 文档 | 前端规范（`general.md` 总则 + `issue/` 专项问题规范） |
 | `settings.json` | 配置 | 主配置示例（含权限、环境变量、状态栏等） |
 | `settings-kimi.json` | 配置 | Kimi 模型相关的配置示例 |
 | `settings-arks.json` | 配置 | Arks 模型相关的配置示例 |
 | `statusline.js` | 脚本 | 自定义 Claude Code 状态栏输出 |
 | `README.md` | 文档 | 本说明文件 |
+
+## 自定义命令（commands/）
+
+| 命令 | 说明 |
+|------|------|
+| `/codemap` | 全量扫描当前项目，生成可导航的项目文档（`CLAUDE.md` 路由 → `AGENTS.md` 总入口 + `codemap/` 模块与专题文档） |
+| `/commit` | 按规范生成 `YYYYMMdd：类型：描述` 格式的 commit message，确认后提交，不自动 push |
+| `/yes` | 确认模型提出的问题，按已提出方案继续执行 |
 
 ## 常用配置项
 
