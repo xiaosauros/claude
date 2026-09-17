@@ -67,4 +67,5 @@
 | 前端总则（常驻） | 任何前端相关任务 | `frontend/general.md` |
 | Next.js dev / HMR / 构建污染 | Next.js 15 dev 启动、HMR 失效、`next build` 与 dev 冲突、Electron 打包 | `frontend/issue/dev-hmr-restart-issue.md` |
 | IME 回车发送 / 中文输入 | 输入框 Enter 发送、中文/日文 IME 候选词、`isComposing` | `frontend/issue/ime-enter-send-issue.md` |
+| 终端/TUI 内 IME 吞字、误删 | xterm/终端模拟器内中文输入、候选窗左上角、连词只上屏首字、组词退格误删终端字符、`keyCode 229` | `frontend/issue/ime-tui-terminal-issue.md` |
 | better-sqlite3 / 原生模块 ABI | better-sqlite3、`.node` 原生绑定、Electron 与 Node ABI 不一致 | `frontend/issue/sqlite-electron-node-abi-issue.md` |
