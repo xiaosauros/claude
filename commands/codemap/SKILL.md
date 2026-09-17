@@ -39,11 +39,17 @@ description: 全量扫描当前项目并生成可导航的项目文档（CLAUDE.
 | `codemap/DESIGN.md` | 颜色、字体、间距、圆角阴影、断点、Tokens、主题切换机制、图标体系 |
 | `codemap/DATABASE.md` | 核心表结构、字段说明、索引、关联关系 |
 
-**文档同步约定**（必须写入生成的 AGENTS.md）：代码改动涉及组件、模块、架构、接口或设计 Token 时，同一任务内同步更新对应文档——模块 → `codemap/modules/*.md`；前端组件/状态/API → `codemap/FRONTEND.md`；主题/Token/交互 → `codemap/DESIGN.md`；数据结构 → `codemap/DATABASE.md`；模块增删/索引/架构决策 → `AGENTS.md`；归属不确定时至少在 AGENTS.md 登记一行。收尾前检查同步。已存在 AGENTS.md 若缺此约定，增量更新时补齐。
+**文档同步约定**（必须写入生成的 AGENTS.md）：代码改动涉及组件、模块、架构、接口或设计 Token 时，同一任务内同步更新对应文档——仅当改动产生需文档化的实质变化时才增量更新，无实质内容不改动——模块 → `codemap/modules/*.md`；前端组件/状态/API → `codemap/FRONTEND.md`；主题/Token/交互 → `codemap/DESIGN.md`；数据结构 → `codemap/DATABASE.md`；模块增删/索引/架构决策 → `AGENTS.md`；归属不确定时至少在 AGENTS.md 登记一行。收尾前检查同步。已存在 AGENTS.md 若缺此约定，增量更新时补齐。
 
 ## 增量更新
 
 目标文件已存在时，先 Read 再用 Edit 定向更新，不盲目覆盖：更新已变化章节，保留仍准确内容与用户手动补充；新增内容追加到对应位置，删除/变更标注，必要时附 `(变更于 <YYYY-MM-dd>)`；仅结构大改时整体重写。`CLAUDE.md` 只保证含 `@AGENTS.md` 导入行，不写扫描内容。
+
+## 大小控制
+
+- `AGENTS.md` 及其路由的目标文件（`codemap/` 下各文档）均保持在 **40K** 以内。
+- 写入时评估目标文件大小：将超过 40K 时把超出部分拆分到新文件（如从 `codemap/modules/<模块名>.md` 拆出子模块文档、从专题文档拆出分册），并在 `AGENTS.md` 索引中登记新路由。
+- 拆分后原文件保留精简后的核心内容与指向新文件的路由，链接保持有效。
 
 ## 约束
 
