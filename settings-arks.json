@@ -2,9 +2,10 @@
 	"env": {
 	    "ANTHROPIC_AUTH_TOKEN": "",
 	    "ANTHROPIC_BASE_URL": "https://ark.cn-beijing.volces.com/api/coding",
-	    "ANTHROPIC_MODEL": "glm-5.2",
-	    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-pro",
-	    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-5.2",
-	    "ANTHROPIC_DEFAULT_SONNET_MODEL": "kimi-k2.7-code"
+	    "ANTHROPIC_MODEL": "glm-5.3-flash",
+	    "ANTHROPIC_DEFAULT_FABLE_MODEL": "kimi-k3",
+	    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-latest",
+	    "ANTHROPIC_DEFAULT_SONNET_MODEL": "kimi-k2.7-code",
+	    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-flash"
 	}
 }
