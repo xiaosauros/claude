@@ -1,6 +1,6 @@
 ---
 name: codemap
-description: 全量扫描当前项目并生成可导航的项目文档（CLAUDE.md 路由 → AGENTS.md 总入口 + docs/ 模块与专题文档，写入项目根目录真实文件）。触发场景：项目梳理、代码梳理、架构分析、生成项目文档、代码库 curate、项目交接文档、scan project
+description: 全量扫描当前项目并生成可导航的项目文档（CLAUDE.md 路由 → AGENTS.md 总入口 + codemap/ 模块与专题文档，写入项目根目录真实文件）。触发场景：项目梳理、代码梳理、架构分析、生成项目文档、代码库 curate、项目交接文档、scan project
 ---
 
 对当前项目做结构化扫描，产出可导航的项目文档并写入磁盘。全程用 Glob/Grep/Read 读代码，不凭空推断；不确定内容标注 (推测)/(待确认)，严禁编造路径与接口。
@@ -34,12 +34,12 @@ description: 全量扫描当前项目并生成可导航的项目文档（CLAUDE.
 |---|---|
 | `CLAUDE.md` | 项目记忆入口，保持精简（一两句说明 + `@AGENTS.md` 导入行）。不存在则创建；无导入行则在顶部追加（保留既有指令）；已含则跳过 |
 | `AGENTS.md` | 文档统一入口：项目概况、技术架构总览、各文档相对路径索引、注意事项概要；必须含「文档同步」约定（见下） |
-| `docs/modules/<模块名>.md` | 每个功能模块一份，二级标题分节 |
-| `docs/FRONTEND.md` | 前端模块分布、组件清单、状态管理、路由、构建配置、API 调用层；前端为独立子目录时可放该子目录根 |
-| `docs/DESIGN.md` | 颜色、字体、间距、圆角阴影、断点、Tokens、主题切换机制、图标体系 |
-| `docs/DATABASE.md` | 核心表结构、字段说明、索引、关联关系 |
+| `codemap/modules/<模块名>.md` | 每个功能模块一份，二级标题分节 |
+| `codemap/FRONTEND.md` | 前端模块分布、组件清单、状态管理、路由、构建配置、API 调用层；前端为独立子目录时可放该子目录根 |
+| `codemap/DESIGN.md` | 颜色、字体、间距、圆角阴影、断点、Tokens、主题切换机制、图标体系 |
+| `codemap/DATABASE.md` | 核心表结构、字段说明、索引、关联关系 |
 
-**文档同步约定**（必须写入生成的 AGENTS.md）：代码改动涉及组件、模块、架构、接口或设计 Token 时，同一任务内同步更新对应文档——模块 → `docs/modules/*.md`；前端组件/状态/API → `docs/FRONTEND.md`；主题/Token/交互 → `docs/DESIGN.md`；数据结构 → `docs/DATABASE.md`；模块增删/索引/架构决策 → `AGENTS.md`；归属不确定时至少在 AGENTS.md 登记一行。收尾前检查同步。已存在 AGENTS.md 若缺此约定，增量更新时补齐。
+**文档同步约定**（必须写入生成的 AGENTS.md）：代码改动涉及组件、模块、架构、接口或设计 Token 时，同一任务内同步更新对应文档——模块 → `codemap/modules/*.md`；前端组件/状态/API → `codemap/FRONTEND.md`；主题/Token/交互 → `codemap/DESIGN.md`；数据结构 → `codemap/DATABASE.md`；模块增删/索引/架构决策 → `AGENTS.md`；归属不确定时至少在 AGENTS.md 登记一行。收尾前检查同步。已存在 AGENTS.md 若缺此约定，增量更新时补齐。
 
 ## 增量更新
 
