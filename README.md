@@ -14,6 +14,7 @@
 | `settings-kimi.json` | 配置 | Kimi 模型相关的配置示例 |
 | `settings-arks.json` | 配置 | Arks 模型相关的配置示例 |
 | `statusline.js` | 脚本 | 自定义 Claude Code 状态栏输出 |
+| `scripts/install.js` | 脚本 | 把本仓库内容安装到本地工具目录（默认 `~/.claude`） |
 | `README.md` | 文档 | 本说明文件 |
 
 ## 自定义命令（commands/）
@@ -91,6 +92,28 @@
 
 ```bash
 echo '{"version":"0.1.0","model":{"display_name":"Claude Sonnet"},"context_window":{"used_percentage":42.5},"workspace":{"current_dir":"/home/user/project"}}' | node statusline.js
+```
+
+## 安装脚本（scripts/install.js）
+
+把本仓库内容安装到本地工具目录，默认 `~/.claude`。
+
+### 安装规则
+
+- 默认只安装目标目录中**不存在**的内容；已存在的文件跳过、不替换。
+- 目录按文件级合并：目录已存在时，只向其中补入目标没有的文件；目标多出的文件不动、不删除。
+- `--force` 时已存在的文件会被覆盖。
+- `.git` / `.gitignore` / `README.md` / `scripts/` / `temp/` / `node_modules/` 不参与安装。
+
+### 用法
+
+```bash
+node scripts/install.js                          # 安装全部默认项（已存在的跳过）
+node scripts/install.js commands statusline.js   # 只安装指定项
+node scripts/install.js commands/codemap         # 指定子层级安装（支持任意层级路径）
+node scripts/install.js --force                  # 已存在的内容也替换
+node scripts/install.js --target ~/.codex        # 安装到其他工具的目录（支持 ~）
+node scripts/install.js --list                   # 列出可安装项
 ```
 
 ## 参考

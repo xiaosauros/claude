@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+out/
+target/
+__pycache__/
+*.pyc
+
+# Logs & temp files
+*.log
+.cache/
+tmp/
+temp/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.idea/
+.vscode/
+
+# AI tools (local data & caches)
+.claude/
+.cursor/
+.aider*
+.gemini/
+.continue/
+.codeium/
+.windsurf/
