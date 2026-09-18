@@ -9,7 +9,7 @@
 | `AGENTS.md` | 文档 | AI 工作规范总入口（通用约定、核心原则、规范索引） |
 | `CLAUDE.md` | 配置 | Claude 项目记忆入口，通过 `@AGENTS.md` 导入规范 |
 | `commands/` | 命令 | 自定义命令（`codemap` 项目梳理 / `commit` 规范提交 / `yes` 确认 / `digest` 阶段总结） |
-| `frontend/` | 文档 | 前端规范（`general.md` 总则 + `issue/` 专项问题规范） |
+| `specs/` | 文档 | 专项规范（`specs/frontend/` 前端规范 + `specs/shell/` Shell 规范，按 `AGENTS.md` 索引按需加载） |
 | `settings.json` | 配置 | 主配置示例（含权限、环境变量、状态栏等） |
 | `settings-kimi.json` | 配置 | Kimi 模型相关的配置示例 |
 | `settings-arks.json` | 配置 | Arks 模型相关的配置示例 |
