@@ -111,6 +111,8 @@ echo '{"version":"0.1.0","model":{"display_name":"Claude Sonnet"},"context_windo
 node scripts/install.js                          # 安装全部默认项（已存在的跳过）
 node scripts/install.js commands statusline.js   # 只安装指定项
 node scripts/install.js commands/codemap         # 指定子层级安装（支持任意层级路径）
+node scripts/install.js commands/*               # 把 commands 下内容装到目标根（cp 语义，剥掉 commands/ 前缀）
+node scripts/install.js commands/commit*         # 按通配符安装匹配项（* / ? 不跨层，同样剥掉目录前缀）
 node scripts/install.js --force                  # 已存在的内容也替换
 node scripts/install.js --target ~/.codex        # 安装到其他工具的目录（支持 ~）
 node scripts/install.js --list                   # 列出可安装项

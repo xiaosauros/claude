@@ -7,6 +7,8 @@
  * 用法：
  *   node scripts/install.js                         安装全部默认项（已存在的内容跳过）
  *   node scripts/install.js commands statusline.js  只安装指定项（支持子层级如 commands/codemap）
+ *   node scripts/install.js commands/*              按通配符把 commands 下内容装到目标根
+ *   node scripts/install.js commands/commit*        按通配符安装匹配项
  *   node scripts/install.js --force                 已存在的内容也替换
  *   node scripts/install.js --target <dir>          安装到指定目录（支持 ~，可指向其他工具的目录）
  *   node scripts/install.js --list                  列出可安装项
@@ -14,6 +16,8 @@
  * 规则：
  *   - 默认只安装目标目录中不存在的内容；已存在的文件跳过，不替换。
  *   - 目录按文件级合并：目录已存在时，只向其中补入目标没有的文件。
+ *   - 指定项支持子层级与通配符：* 匹配单层任意字符（不含 /），? 匹配单层单个字符。
+ *     含通配符的项按 cp 语义剥掉通配符前的目录前缀：commands/* 装到目标根下。
  *   - --force 时已存在的文件会被覆盖。
  *   - .git / .gitignore / README.md / scripts / temp / node_modules 不参与安装。
  */
@@ -53,14 +57,42 @@ function resolveTarget(dir) {
   return path.resolve(expanded);
 }
 
-// 校验并解析一个安装项（支持子层级，如 commands/codemap）
-// 返回相对路径（/ 分隔），不合法或不存在时返回 null
-function resolveItem(name) {
+// 把单个路径段的通配符模式转为正则（* / ? 均不跨层，即不匹配 /）
+function wildcardToRegExp(seg) {
+  const escaped = seg.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '[^/]*').replace(/\?/g, '[^/]');
+  return new RegExp(`^${escaped}$`);
+}
+
+// 展开一个安装项为 { src, dst } 列表（支持子层级与通配符，如 commands/codemap、commands/*、commands/commit*）
+// 通配符逐层展开：每层在已匹配目录下按模式过滤
+// 安装目标按 cp 语义剥掉首个通配符前的目录前缀：commands/* 装到目标根下（codemap、commit…），
+// commands/*/SKILL.md 装到 codemap/SKILL.md；无通配符的项保持原相对路径
+// 不合法或无匹配时返回空数组
+function expandItem(name) {
   const parts = name.replace(/\\/g, '/').split('/').filter(Boolean);
-  if (parts.length === 0 || path.isAbsolute(name) || parts.some((p) => p === '..' || p === '.')) return null;
-  if (EXCLUDES.has(parts[0])) return null; // 排除目录下的内容不允许安装
-  if (!fs.existsSync(path.join(REPO_ROOT, ...parts))) return null;
-  return parts.join('/');
+  if (parts.length === 0 || path.isAbsolute(name) || parts.some((p) => p === '..' || p === '.')) return [];
+  if (EXCLUDES.has(parts[0])) return []; // 排除目录下的内容不允许安装
+  const wildcardIdx = parts.findIndex((p) => /[*?]/.test(p));
+  let matches = [[]];
+  for (const part of parts) {
+    const next = [];
+    if (/[*?]/.test(part)) {
+      const re = wildcardToRegExp(part);
+      for (const m of matches) {
+        const dir = path.join(REPO_ROOT, ...m);
+        if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) continue;
+        for (const e of fs.readdirSync(dir)) {
+          if (re.test(e)) next.push([...m, e]);
+        }
+      }
+    } else {
+      for (const m of matches) {
+        if (fs.existsSync(path.join(REPO_ROOT, ...m, part))) next.push([...m, part]);
+      }
+    }
+    matches = next;
+  }
+  return matches.map((m) => ({ src: m.join('/'), dst: m.slice(Math.max(wildcardIdx, 0)).join('/') }));
 }
 
 // 仓库中可安装的顶层内容
@@ -130,12 +162,12 @@ if (listOnly) {
   process.exit(0);
 }
 
-// 校验指定的安装项（支持子层级，如 commands/codemap）
-const resolvedItems = items.map((name) => ({ name, rel: resolveItem(name) }));
-const invalid = resolvedItems.filter((it) => !it.rel).map((it) => it.name);
+// 校验并展开指定的安装项（支持子层级与通配符，如 commands/codemap、commands/commit*）
+const resolvedItems = items.map((name) => ({ name, rels: expandItem(name) }));
+const invalid = resolvedItems.filter((it) => it.rels.length === 0).map((it) => it.name);
 if (invalid.length > 0) {
-  console.error(`错误：以下内容不在可安装项中：${invalid.join(', ')}`);
-  console.error(`可安装项（顶层，支持子层级如 commands/codemap）：${installables.join(', ')}`);
+  console.error(`错误：以下内容无匹配的可安装项：${invalid.join(', ')}`);
+  console.error(`可安装项（顶层，支持子层级如 commands/codemap 与通配符如 commands/*）：${installables.join(', ')}`);
   process.exit(1);
 }
 
@@ -147,18 +179,18 @@ if (targetRoot === path.resolve(REPO_ROOT)) {
 
 // ---------- 执行安装 ----------
 
-// 无指定项时默认安装全部顶层内容
+// 无指定项时默认安装全部顶层内容；通配符展开后可能重复，按目标路径去重
 const toInstall = items.length > 0
-  ? resolvedItems.map((it) => it.rel)
-  : installables;
+  ? [...new Map(resolvedItems.flatMap((it) => it.rels).map((p) => [p.dst, p])).values()]
+  : installables.map((name) => ({ src: name, dst: name }));
 fs.mkdirSync(targetRoot, { recursive: true });
 
 log(`目标目录：${targetRoot}`);
 log(`安装模式：${force ? '替换已存在' : '跳过已存在'}，共 ${toInstall.length} 项`);
 
 const stat = { installed: 0, skipped: 0, replaced: 0 };
-for (const rel of toInstall) {
-  copyEntry(path.join(REPO_ROOT, rel), path.join(targetRoot, rel), targetRoot, force, stat);
+for (const { src, dst } of toInstall) {
+  copyEntry(path.join(REPO_ROOT, src), path.join(targetRoot, dst), targetRoot, force, stat);
 }
 
 log(`完成：安装 ${stat.installed}，替换 ${stat.replaced}，跳过 ${stat.skipped}`);
