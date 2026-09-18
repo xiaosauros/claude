@@ -75,3 +75,4 @@
 | 场景关键词 | 触发条件 | 规范文件 |
 |---|---|---|
 | PowerShell 执行命令 | PowerShell 下执行命令、正则、管道、语句块、`rg` 搜索、复杂命令或文本数据处理 | `specs/shell/powershell.md` |
+| Bash 执行命令 | Bash 下执行多条命令、命令合并或并行调用 | `specs/shell/bash.md` |
