@@ -8,7 +8,7 @@
 |-----------|------|------|
 | `AGENTS.md` | 文档 | AI 工作规范总入口（通用约定、核心原则、规范索引） |
 | `CLAUDE.md` | 配置 | Claude 项目记忆入口，通过 `@AGENTS.md` 导入规范 |
-| `commands/` | 命令 | 自定义命令（`codemap` 项目梳理 / `commit` 规范提交 / `yes` 确认） |
+| `commands/` | 命令 | 自定义命令（`codemap` 项目梳理 / `commit` 规范提交 / `yes` 确认 / `digest` 阶段总结） |
 | `frontend/` | 文档 | 前端规范（`general.md` 总则 + `issue/` 专项问题规范） |
 | `settings.json` | 配置 | 主配置示例（含权限、环境变量、状态栏等） |
 | `settings-kimi.json` | 配置 | Kimi 模型相关的配置示例 |
@@ -23,6 +23,7 @@
 | `/codemap` | 全量扫描当前项目，生成可导航的项目文档（`CLAUDE.md` 路由 → `AGENTS.md` 总入口 + `codemap/` 模块与专题文档） |
 | `/commit` | 按规范生成 `YYYYMMdd：类型：描述` 格式的 commit message，确认后提交，不自动 push |
 | `/yes` | 确认模型提出的问题，按已提出方案继续执行 |
+| `/digest` | 总结一段时间内 git 提交的内容与类型百分比，默认近一周，可指定日期或相对范围（如 `/digest 2026-09-01 2026-09-15`、`/digest 近一个月`） |
 
 ## 常用配置项
 
