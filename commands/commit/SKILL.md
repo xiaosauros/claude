@@ -29,7 +29,7 @@ description: 按项目规范提交本次修改，生成 `YYYYMMdd：类型：描
 - 用户已自行 stage 的内容，只 commit 已 stage 部分。
 - 无改动时直接告知，不执行提交。
 - 发现敏感文件（`.env`、密钥、证书）时警告用户并跳过。
-- **提交前检查作者身份**：`git config user.name`、`git config user.email` 任一为空，说明沙箱环境（如 Codex）读不到全局/includeIf 配置，提交会报 `Author identity unknown`；此时先向用户确认姓名和邮箱（或取会话上下文中已知的 Git 用户），写入仓库级配置后再提交：
+- **提交前检查作者身份**：`git config user.name`、`git config user.email` 任一为空，说明沙箱环境（如 Codex）读不到全局/includeIf 配置，提交会报 `Author identity unknown`；此时取**当前仓库的**作者身份写入仓库级配置后再提交，取值顺序：`git log -1 --format='%an|%ae'` 的历史作者 → 会话上下文中的 Git 用户 → 询问用户：
   ```powershell
   git config user.name "<姓名>"
   git config user.email "<邮箱>"
