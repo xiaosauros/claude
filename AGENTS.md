@@ -77,3 +77,9 @@
 | PowerShell 执行命令 | PowerShell / pwsh / `.ps1` / 执行策略 / PS 5.1 相关的命令执行 | `specs/shell/powershell.md` |
 | Bash 执行命令 | Bash 下执行多条命令、命令合并或并行调用 | `specs/shell/bash.md` |
 | 长输出截断 | diff、日志、目录列表等输出可能超长 | `specs/shell/bash.md`（Bash）/ `specs/shell/powershell.md`（PowerShell） |
+
+### Git / `specs/git/`
+
+| 场景关键词 | 触发条件 | 规范文件 |
+|---|---|---|
+| Git 提交 | 执行 `git commit`、生成提交 message、暂存与提交流程 | `specs/git/commit.md` |
