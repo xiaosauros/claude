@@ -2,6 +2,14 @@
 
 用 PowerShell 执行命令时遵守。
 
+## 命令选择
+
+- `npm`、`npx`、`pnpm` 用 `npm.cmd` 等带 `.cmd` 形式：裸名解析到 `.ps1`，启动慢且可能被执行策略拦截。
+- Python 用 `python.exe` 或 `py`：裸 `python` 可能命中 WindowsApps 存根，静默失败或弹商店。
+- 搜索优先 `rg`；通配目录先用 `Get-ChildItem -Filter` 展开为真实路径。
+- `sed`、`awk`、`grep`、`chmod` 等 Unix 专用工具默认不存在，确认已安装才可用。
+- `rm`、`cp`、`mv`、`ls`、`cat`、`curl` 是 PowerShell 别名，行为与 Unix 不同；需要真实工具时显式写 `curl.exe` 等。
+
 ## 语法
 
 - 正则用单引号包裹，避免 `|`、`(`、`)` 被解析为管道或子表达式。
@@ -12,10 +20,12 @@
 - `&&`、`||` 仅 PowerShell 7+；5.1 用 `;` 分隔，以 `$LASTEXITCODE` 判断成败（`$?` 不是退出码）。
 - 路径含空格用调用操作符：`& "C:\Program Files\xxx\x.exe"`。
 
-## 与 Unix 工具的区别
+## 失败与重试
 
-- `rm`、`curl`、`ls`、`cat`、`cp` 等是 PowerShell 别名，行为与 Unix 不同；需要真实工具时显式写 `curl.exe` 等。
-- rg 通配目录先用 `Get-ChildItem -Filter` 展开为真实路径。
+- 失败先定位原因（语法、权限、沙盒限制）再针对性调整；不靠换引号、换包装器等表面改写反复重试同一命令。
+- 相关的只读检查（查看文件、状态、日志等）合并为一次调用执行。
+- 修改文件优先用编辑工具（Edit），不用 shell 文本替换。
+- 测试只跑与改动文件相关的用例，除非需要更广泛的验证。
 
 ## 编码
 
