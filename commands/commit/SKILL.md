@@ -18,7 +18,7 @@ description: 按项目规范提交本次修改，生成 `YYYYMMdd：类型：描
      ```
      输出中文乱码时先执行 `[Console]::OutputEncoding = [System.Text.Encoding]::UTF8`。
    diff 被截断时以 `--stat` 判断改动范围，不追加读取完整 diff。
-2. **生成 message**：格式 `YYYYMMdd：类型：描述`（与 AGENTS.md 会话命名规范一致）。
+2. **生成 message**：格式 `YYYYMMdd：类型：描述`。
    - 类型限定：`功能 | 修复 | 优化 | 重构 | 文档 | 样式 | 测试`。
    - 描述不超过 50 字，简明说明变更内容。
 3. **确认后提交**：展示 message 与待提交文件清单，**等用户确认**后再 `git add`、`git commit`；**不自动 push**。
