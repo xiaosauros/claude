@@ -7,14 +7,14 @@ description: 按项目规范提交本次修改，生成 `YYYYMMdd：类型：描
 
 ## 流程
 
-1. **一次调用获取改动信息**，不分多次执行。Bash 优先，不可用时用 PowerShell。
+1. **一次调用获取改动信息与作者身份**，不分多次执行。Bash 优先，不可用时用 PowerShell。
    - Bash：
      ```bash
-     git status --short && git diff --stat HEAD && git diff HEAD | head -c 6000
+     echo "user.name=[$(git config user.name)] user.email=[$(git config user.email)]"; git status --short && git diff --stat HEAD && git diff HEAD | head -c 6000
      ```
    - PowerShell：
      ```powershell
-     git status --short; git diff --stat HEAD; git diff HEAD | Select-Object -First 80
+     "user.name=[$(git config user.name)] user.email=[$(git config user.email)]"; git status --short; git diff --stat HEAD; git diff HEAD | Select-Object -First 80
      ```
      输出中文乱码时先执行 `[Console]::OutputEncoding = [System.Text.Encoding]::UTF8`。
    diff 被截断时以 `--stat` 判断改动范围，不追加读取完整 diff。
@@ -29,7 +29,7 @@ description: 按项目规范提交本次修改，生成 `YYYYMMdd：类型：描
 - 用户已自行 stage 的内容，只 commit 已 stage 部分。
 - 无改动时直接告知，不执行提交。
 - 发现敏感文件（`.env`、密钥、证书）时警告用户并跳过。
-- **提交前检查作者身份**：`git config user.name`、`git config user.email` 任一为空，说明沙箱环境（如 Codex）读不到全局/includeIf 配置，提交会报 `Author identity unknown`；此时取**当前仓库的**作者身份写入仓库级配置后再提交，取值顺序：`git log -1 --format='%an|%ae'` 的历史作者 → 会话上下文中的 Git 用户 → 询问用户：
+- **提交前检查作者身份**：作者身份已并入流程 1 的组合命令（输出首行 `user.name=[...] user.email=[...]`，方括号为空即未配置）。任一为空说明沙箱环境（如 Codex）读不到全局/includeIf 配置，提交会报 `Author identity unknown`；此时取**当前仓库的**作者身份写入仓库级配置后再提交，取值顺序：`git log -1 --format='%an|%ae'` 的历史作者 → 会话上下文中的 Git 用户 → 询问用户：
   ```powershell
   git config user.name "<姓名>"
   git config user.email "<邮箱>"
