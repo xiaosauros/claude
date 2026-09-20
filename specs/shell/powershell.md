@@ -32,6 +32,7 @@
 
 - 含中文的 `.ps1` 必须存 UTF-8 with BOM，否则 5.1 按 ANSI 解析导致乱码。
 - `>` 重定向在 5.1 默认 UTF-16LE；UTF-8 文件用 `Out-File -Encoding utf8`。
+- 读取文件必须显式指定 `-Encoding UTF8`：`Get-Content -Raw -Encoding UTF8 -LiteralPath 'xxx.md'`。
 - 中文乱码先执行 `[Console]::OutputEncoding = [System.Text.Encoding]::UTF8`。
 
 ## 复杂任务
