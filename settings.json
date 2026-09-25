@@ -2,10 +2,11 @@
 	"env": {
 	    "ANTHROPIC_AUTH_TOKEN": "",
 	    "ANTHROPIC_BASE_URL": "https://ark.cn-beijing.volces.com/api/coding",
-	    "ANTHROPIC_MODEL": "glm-5.2",
-	    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-pro",
-	    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-5.2",
+	    "ANTHROPIC_MODEL": "glm-5.3-flash",
+	    "ANTHROPIC_DEFAULT_FABLE_MODEL": "kimi-k3",
+	    "ANTHROPIC_DEFAULT_OPUS_MODEL": "glm-latest",
 	    "ANTHROPIC_DEFAULT_SONNET_MODEL": "kimi-k2.7-code",
+	    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-flash",
 	    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "75",
     	"CLAUDE_CODE_MAX_RETRIES": "5"
 	},
@@ -14,33 +15,32 @@
 		"defaultMode": "auto",
 		"allow": [
 			"WebFetch",
-		    "WebSearch",
-		    "Write",
-		    "Edit",
-		    "Read",
-		    "Update",
-		    "Fetch",
-		    "Bash(heap *)",
-		    "Bash(tail *)",
-      		"Bash(grep *)",
-      		"Bash(cat *)",
-      		"Bash(find *)",
-      		"Bash(ls *)",
-      		"Bash(cd *)",
+			"WebSearch",
+			"Write",
+			"Edit",
+			"Read",
+			"Update",
+			"Fetch",
+			"Bash(heap *)",
+			"Bash(tail *)",
+			"Bash(grep *)",
+			"Bash(cat *)",
+			"Bash(find *)",
+			"Bash(ls *)",
+			"Bash(cd *)",
 		],
 		"deny": [
 			"Bash(sudo *)",
-      		"Bash(chmod *)",
-      		"Bash(chown *)",
+			"Bash(chmod *)",
+			"Bash(chown *)",
 			"Bash(git push *)",
-	        "Bash(git merge *)",
-	        "Bash(git clean *)",
-	        "Bash(git rm *)"
+			"Bash(git merge *)",
+			"Bash(git clean *)",
+			"Bash(git rm *)"
 		],
 		"ask": [
 			"Bash(rm *)",
-      		"Bash(mv *)",
-      		"Bash(git commit *)"
+			"Bash(mv *)"
 		]
 	},
 	"statusLine": {
